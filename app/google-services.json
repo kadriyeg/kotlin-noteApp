@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "338097375516",
+    "project_id": "kmb-kapsul",
+    "storage_bucket": "kmb-kapsul.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338097375516:android:5b0a09577bd91b4cd712d9",
+        "android_client_info": {
+          "package_name": "com.example.projebm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "338097375516-ju4u87mvo9g7mu6c36udceg13ciufh6i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBf7qf_O-aIX_w_cJdz4hSvK0tvoh6m5Dc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "338097375516-ju4u87mvo9g7mu6c36udceg13ciufh6i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
