@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projebm">
         <activity
+            android:name=".FotografPaylasmaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AnaSayfaActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
