@@ -12,12 +12,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_fotograf_paylasma.*
+import java.sql.Timestamp
 import java.util.*
 import java.util.UUID.randomUUID
 
@@ -55,7 +57,30 @@ class FotografPaylasmaActivity : AppCompatActivity() {
       //kullanıcı görsel seçmeden yükleme yaparsa uygulama çökmemesi için if kontrol bloğu
         if (secilenGorsel != null){
             gorselReference.putFile(secilenGorsel!!).addOnSuccessListener { taskSnapshot ->
-              println("yüklendi")
+              val yuklenenGorselReference = FirebaseStorage.getInstance().reference.child("images").child(gorselIsmi)
+                yuklenenGorselReference.downloadUrl.addOnSuccessListener { uri->
+                    val downloadUrl = uri.toString()
+                    val guncelKullaniciEmaili= auth.currentUser!!.email.toString()
+                    val kullaniciYorumu= yorumText.text.toString()
+                    val tarih = com.google.firebase.Timestamp.now()
+
+                    //veritabanı işlemleri
+                    val postHashMap = hashMapOf<String,Any>()
+                    postHashMap.put("gorselurl", downloadUrl)
+                    postHashMap.put("kullaniciemail",guncelKullaniciEmaili)
+                    postHashMap.put("kullaniciyorum",kullaniciYorumu)
+                    postHashMap.put("tarih",tarih)
+
+                    database.collection("Posts").add(postHashMap).addOnCompleteListener { task->
+                        if(task.isSuccessful){
+                            finish()
+                        }
+                    }.addOnFailureListener { exception->
+                        Toast.makeText(applicationContext,exception.localizedMessage,Toast.LENGTH_LONG).show()
+                    }
+                }.addOnFailureListener { exception ->
+                    Toast.makeText(applicationContext,exception.localizedMessage,Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
