@@ -14,22 +14,52 @@ import android.provider.MediaStore
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_fotograf_paylasma.*
+import java.util.*
+import java.util.UUID.randomUUID
 
 class FotografPaylasmaActivity : AppCompatActivity() {
 
     var secilenGorsel :Uri? = null;
     var secilenBitmap: Bitmap? = null;
+    private lateinit var storage : FirebaseStorage
+    private lateinit var auth : FirebaseAuth
+    private lateinit var database : FirebaseFirestore
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fotograf_paylasma)
+
+        storage =  FirebaseStorage.getInstance()
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseFirestore.getInstance()
+
     }
 
     fun paylas(view: View){
 
+        //her görsele farklı bir id atanması için, uuid
+        val uuid = UUID.randomUUID()
+        val gorselIsmi = "${uuid}.jpg"
+        //gorselin nereye kaydedileceği reference sayesinde söylenebiliyor
+        val reference = storage.reference
+
+        //images klasöründeki secilenGorsel.jpg'e referans veriyor,
+        // tüm klasörü seçmek için reference.child sonrasını kaldır
+        val gorselReference = reference.child("images").child(gorselIsmi)
+
+      //kullanıcı görsel seçmeden yükleme yaparsa uygulama çökmemesi için if kontrol bloğu
+        if (secilenGorsel != null){
+            gorselReference.putFile(secilenGorsel!!).addOnSuccessListener { taskSnapshot ->
+              println("yüklendi")
+            }
+        }
     }
+
 
     fun gorselSec(view: View){
     if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
@@ -41,6 +71,7 @@ class FotografPaylasmaActivity : AppCompatActivity() {
     startActivityForResult(galeriIntent,2)
     }
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
