@@ -1,2 +1,2 @@
 # projebm
-Kotlin ile geliştirilmiş basit bir not paylaşım uygulaması. Commitlerim development branch'i altında.
+Kotlin ile geliştirilmiş basit bir not paylaşım uygulaması. Bu uygulamada Firebase veritabanı kullandım.
